@@ -43,19 +43,24 @@ export default function index() {
     setSelectedExercises({});
     setPageMode("create");
   };
-  console.log(selectedExercises, addExercises);
 
   return (
     <div>
       <h1>Welcome to GymWeizer</h1>
-      <h2>Choose an existing training</h2>
       {selectedExercises.length &&
         selectedExercises.map((exercise, index) => (
           <div key={index}>
-            <li>{exercise}</li>
+            <ul>
+              <li>{exercise}</li>
+            </ul>
           </div>
         ))}
-      <h2>Or create one</h2>
+      {pageMode === "create" && (
+        <div>
+          <h2>Create your set</h2>
+          <p>Select exercises to your training</p>
+        </div>
+      )}
       {pageMode !== "view" &&
         exerciseBank &&
         exerciseBank.map((exercise, index) => (
@@ -68,7 +73,7 @@ export default function index() {
                 checked={!!selectedExercises[exercise]}
                 onChange={() => handleCheckboxChange(exercise)}
               />
-              <label for="exercises">{exercise}</label>
+              <label htmlFor="exercises">{exercise}</label>
             </div>
           </div>
         ))}
