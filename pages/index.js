@@ -5,20 +5,44 @@ export default function index() {
   const [selectedExercises, setSelectedExercises] = useState({});
 
   const exerciseBank = [
-    "bench press",
-    "incline dumbbell press",
-    "dumbbell chest fly",
-    "chest fly",
-    "decline bench press",
-    "dumbbell chest press",
-    "pushup",
-    "dumbbell flyes",
-    "dumbbell bench press",
-    "dips",
-    "cable crossover",
-    "incline pushup",
-    "decline pushup",
-    "traveling plank",
+    {
+      group: "chest",
+      exercises: [
+        "bench press",
+        "incline dumbbell press",
+        "dumbbell chest fly",
+        "chest fly",
+        "decline bench press",
+        "dumbbell chest press",
+        "pushup",
+        "dumbbell flyes",
+        "dumbbell bench press",
+        "dips",
+        "cable crossover",
+        "incline pushup",
+        "decline pushup",
+        "traveling plank",
+      ],
+    },
+    {
+      group: "back",
+      exercises: [
+        "lat pulldown",
+        "one arm dumbbell row",
+        "pull-ups",
+        "cable row",
+        "seated row",
+        "dumbbell row",
+        "reverse fly",
+        "barbell row",
+        "T-bar row",
+        "Bent-over dumbbell row",
+        "bent over barbell row",
+        "inverted row",
+        "trap-bar deadlift",
+        "dumbbell shrugs",
+      ],
+    },
   ];
 
   const handleCheckboxChange = (exercise) => {
@@ -47,6 +71,11 @@ export default function index() {
   return (
     <div>
       <h1>Welcome to GymWeizer</h1>
+      {pageMode === "view" && (
+        <div>
+          <h2>This is your set</h2>
+        </div>
+      )}
       {selectedExercises.length &&
         selectedExercises.map((exercise, index) => (
           <div key={index}>
@@ -58,7 +87,6 @@ export default function index() {
       {pageMode === "create" && (
         <div>
           <h2>Create your set</h2>
-          <p>Select exercises to your training</p>
         </div>
       )}
       {pageMode !== "view" &&
