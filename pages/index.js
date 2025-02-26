@@ -46,6 +46,7 @@ export default function index() {
   ];
 
   const handleCheckboxChange = (exercise) => {
+    //receives a string and add it to selectedExercises making it true or false
     setSelectedExercises((prev) => ({
       ...prev,
       [exercise]: !prev[exercise],
@@ -53,20 +54,25 @@ export default function index() {
   };
 
   const addExercises = () => {
+    //filters all objects with value true from selectedExercises
     const selectedList = Object.keys(selectedExercises).filter(
       (exercise) => selectedExercises[exercise]
     );
     if (!selectedList.length) {
+      //if the list is empty, just returns
       return;
     }
+    //reset the list of exercises in case user ticks and unticks some item
     setSelectedExercises(selectedList);
     setPageMode("view");
   };
 
   const removeExercises = () => {
+    //sets list of exercises to empty, and swtiches page mode
     setSelectedExercises({});
     setPageMode("create");
   };
+  console.log(exerciseBank);
 
   return (
     <div>
@@ -76,14 +82,14 @@ export default function index() {
           <h2>This is your set</h2>
         </div>
       )}
-      {selectedExercises.length &&
+      {/* {selectedExercises.length &&
         selectedExercises.map((exercise, index) => (
           <div key={index}>
             <ul>
-              <li>{exercise}</li>
+              <li>{exercise["group"]}</li>
             </ul>
           </div>
-        ))}
+        ))} */}
       {pageMode === "create" && (
         <div>
           <h2>Create your set</h2>
@@ -94,14 +100,18 @@ export default function index() {
         exerciseBank.map((exercise, index) => (
           <div key={index}>
             <div>
-              <input
+              {/* <input
                 type="checkbox"
                 id={`exercise-${index}`}
-                value={exercise}
+                value={exercise["group"]}
                 checked={!!selectedExercises[exercise]}
                 onChange={() => handleCheckboxChange(exercise)}
-              />
-              <label htmlFor="exercises">{exercise}</label>
+              /> */}
+              <h2>{exercise["group"]}</h2>
+              {exercise["exercises"].map((exercise, subindex) => (
+                <li>{exercise}</li>
+              ))}
+              {/* <label htmlFor="exercises">{exercise}</label> */}
             </div>
           </div>
         ))}
