@@ -1,4 +1,4 @@
-import React, { use, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 
 export default function index() {
   const exerciseBank = [
@@ -43,7 +43,22 @@ export default function index() {
   ];
   const [pageMode, setPageMode] = useState("create");
   const [selectedExercises, setSelectedExercises] = useState(exerciseBank);
-  const [selectedGroups, setSelectedGroups] = useState(null);
+  const [buttonActive, setButtonActive] = useState(false);
+
+  useEffect(() => {
+    console.log("useEffect called");
+    //check all groups every time, if at least one group
+    //has a chosen exercise, true, else, false
+    let activeMode;
+    const addedExercises = selectedExercises.map((group) => {
+      if (group.exercises.find((item) => item.chosen)) {
+        activeMode = true;
+      } else if (!activeMode) {
+        activeMode = false;
+      }
+      setButtonActive(activeMode);
+    });
+  }, [selectedExercises]);
 
   const addExercises = () => {
     setPageMode("view");
@@ -121,6 +136,7 @@ export default function index() {
       <div>
         <button
           onClick={pageMode === "create" ? addExercises : removeExercises}
+          disabled={!buttonActive}
         >
           {pageMode === "create" ? "add set" : "reset"}
         </button>
