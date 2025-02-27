@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function index() {
   const exerciseBank = [
@@ -40,15 +40,134 @@ export default function index() {
         { name: "dumbbell shrugs", chosen: false },
       ],
     },
+    {
+      group: "biceps",
+      exercises: [
+        { name: "concentration curl", chosen: false },
+        { name: "machine preacher curl", chosen: false },
+        { name: "zottman curl", chosen: false },
+        { name: "barbell curls", chosen: false },
+        { name: "hammer curl", chosen: false },
+        { name: "bicep curl", chosen: false },
+        { name: "chin up", chosen: false },
+        { name: "EZ bar curl", chosen: false },
+        { name: "spider curl", chosen: false },
+        { name: "alternate biceps curl", chosen: false },
+        { name: "reverse curl", chosen: false },
+        { name: "inverted row", chosen: false },
+        { name: "incline bumbbell curl", chosen: false },
+        { name: "incline curls", chosen: false },
+        { name: "band curl", chosen: false },
+        { name: "cable bicep curl", chosen: false },
+        { name: "alternating incline dumbbell curl", chosen: false },
+        { name: "preacher hammer dumbbell curl", chosen: false },
+      ],
+    },
+    {
+      group: "triceps",
+      exercises: [
+        { name: "triceps pushdown", chosen: false },
+        { name: "skull crushers", chosen: false },
+        { name: "rope pushdowns", chosen: false },
+        { name: "tricep dips", chosen: false },
+        { name: "tricep extensions", chosen: false },
+        { name: "dumbbell lying triceps extension", chosen: false },
+        { name: "dumbbell triceps kickback", chosen: false },
+        { name: "lying triceps extensions", chosen: false },
+        { name: "pushups", chosen: false },
+        { name: "close-grip push-up", chosen: false },
+        { name: "diamond pushup", chosen: false },
+        { name: "cable rope extension", chosen: false },
+        { name: "close grip bench press", chosen: false },
+        { name: "bodyweight triceps extension", chosen: false },
+        { name: "overhead tricep extension", chosen: false },
+        { name: "dips", chosen: false },
+        { name: "one-arm overhead extension", chosen: false },
+        { name: "bench dip", chosen: false },
+        { name: "cable kickback", chosen: false },
+      ],
+    },
+    {
+      group: "abs",
+      exercises: [
+        { name: "sit-up", chosen: false },
+        { name: "seated ab crunch machine", chosen: false },
+        { name: "decline sit-up", chosen: false },
+        { name: "dip/leg raise", chosen: false },
+        { name: "crunch", chosen: false },
+        { name: "plank", chosen: false },
+        { name: "V-ups", chosen: false },
+        { name: "bicycle crunch", chosen: false },
+        { name: "hollow hold", chosen: false },
+        { name: "reverse crunch", chosen: false },
+        { name: "leg raise", chosen: false },
+        { name: "medicine ball slam", chosen: false },
+        { name: "barbell ab rollout", chosen: false },
+        { name: "exercise ball crunch", chosen: false },
+        { name: "hollow rock", chosen: false },
+        { name: "navasana", chosen: false },
+        { name: "cable crunch", chosen: false },
+        { name: "dead bug", chosen: false },
+        { name: "butterfly sit up", chosen: false },
+        { name: "bird dog exercise", chosen: false },
+      ],
+    },
+    {
+      group: "legs",
+      exercises: [
+        { name: "leg press", chosen: false },
+        { name: "leg extension", chosen: false },
+        { name: "leg curl", chosen: false },
+        { name: "calf raises", chosen: false },
+        { name: "back squat", chosen: false },
+        { name: "bulgarian split squat", chosen: false },
+        { name: "goblet squat", chosen: false },
+        { name: "romanian deadlift", chosen: false },
+        { name: "glute bridge", chosen: false },
+        { name: "dumbbell step up", chosen: false },
+        { name: "walking lunge with overhead weight", chosen: false },
+        { name: "dumbbell squat", chosen: false },
+        { name: "deadlift", chosen: false },
+        { name: "dumbbell split squat", chosen: false },
+        { name: "lateral lunge", chosen: false },
+        { name: "split squats", chosen: false },
+        { name: "jump squat", chosen: false },
+        { name: "rear foot elevated split squat", chosen: false },
+        { name: "isometric calf raise", chosen: false },
+        { name: "stiff-legged dumbbell deadlift", chosen: false },
+        { name: "dumbbell deadlift", chosen: false },
+        { name: "walking lunges", chosen: false },
+        { name: "sumo squat", chosen: false },
+        { name: "goblet squat", chosen: false },
+        { name: "reverse lunge", chosen: false },
+        { name: "front squat", chosen: false },
+        { name: "hamstring curl", chosen: false },
+        { name: "box step up", chosen: false },
+        { name: "squats and lunges", chosen: false },
+        { name: "standing dumbbell calf raise", chosen: false },
+        { name: "rear lunge", chosen: false },
+        { name: "stiff-legged deadlift", chosen: false },
+        { name: "barbell glute bridge", chosen: false },
+        { name: "cyclist squat", chosen: false },
+        { name: "step up", chosen: false },
+        { name: "front foot elevated split step", chosen: false },
+        { name: "rear foot elevated split squat", chosen: false },
+        { name: "squat", chosen: false },
+        { name: "romanian deadlift with dumbbells", chosen: false },
+        { name: "single leg deadlift", chosen: false },
+        { name: "side lunge", chosen: false },
+        { name: "hip thrust", chosen: false },
+        { name: "dumbbell walking lunge", chosen: false },
+        { name: "barbell squat", chosen: false },
+        { name: "kettlebell swing", chosen: false },
+      ],
+    },
   ];
   const [pageMode, setPageMode] = useState("create");
   const [selectedExercises, setSelectedExercises] = useState(exerciseBank);
   const [buttonActive, setButtonActive] = useState(false);
 
   useEffect(() => {
-    console.log("useEffect called");
-    //check all groups every time, if at least one group
-    //has a chosen exercise, true, else, false
     let activeMode;
     const addedExercises = selectedExercises.map((group) => {
       if (group.exercises.find((item) => item.chosen)) {
@@ -85,7 +204,6 @@ export default function index() {
     setSelectedExercises(exerciseBank);
     setPageMode("create");
   };
-  console.log(exerciseBank);
 
   return (
     <div>
