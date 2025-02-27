@@ -1,75 +1,73 @@
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 
 export default function index() {
-  const [pageMode, setPageMode] = useState("create");
-  const [selectedExercises, setSelectedExercises] = useState({});
-
   const exerciseBank = [
     {
       group: "chest",
       exercises: [
-        "bench press",
-        "incline dumbbell press",
-        "dumbbell chest fly",
-        "chest fly",
-        "decline bench press",
-        "dumbbell chest press",
-        "pushup",
-        "dumbbell flyes",
-        "dumbbell bench press",
-        "dips",
-        "cable crossover",
-        "incline pushup",
-        "decline pushup",
-        "traveling plank",
+        { name: "bench press", chosen: false },
+        { name: "incline dumbbell press", chosen: false },
+        { name: "dumbbell chest fly", chosen: false },
+        { name: "chest fly", chosen: false },
+        { name: "decline bench press", chosen: false },
+        { name: "dumbbell chest press", chosen: false },
+        { name: "pushup", chosen: false },
+        { name: "dumbbell flyes", chosen: false },
+        { name: "dumbbell bench press", chosen: false },
+        { name: "dips", chosen: false },
+        { name: "cable crossover", chosen: false },
+        { name: "incline pushup", chosen: false },
+        { name: "decline pushup", chosen: false },
+        { name: "traveling plank", chosen: false },
       ],
     },
     {
       group: "back",
       exercises: [
-        "lat pulldown",
-        "one arm dumbbell row",
-        "pull-ups",
-        "cable row",
-        "seated row",
-        "dumbbell row",
-        "reverse fly",
-        "barbell row",
-        "T-bar row",
-        "Bent-over dumbbell row",
-        "bent over barbell row",
-        "inverted row",
-        "trap-bar deadlift",
-        "dumbbell shrugs",
+        { name: "lat pulldown", chosen: false },
+        { name: "one arm dumbbell row", chosen: false },
+        { name: "pull-ups", chosen: false },
+        { name: "cable row", chosen: false },
+        { name: "seated row", chosen: false },
+        { name: "dumbbell row", chosen: false },
+        { name: "reverse fly", chosen: false },
+        { name: "barbell row", chosen: false },
+        { name: "T-bar row", chosen: false },
+        { name: "Bent-over dumbbell row", chosen: false },
+        { name: "bent over barbell row", chosen: false },
+        { name: "inverted row", chosen: false },
+        { name: "trap-bar deadlift", chosen: false },
+        { name: "dumbbell shrugs", chosen: false },
       ],
     },
   ];
-
-  const handleCheckboxChange = (exercise) => {
-    //receives a string and add it to selectedExercises making it true or false
-    setSelectedExercises((prev) => ({
-      ...prev,
-      [exercise]: !prev[exercise],
-    }));
-  };
+  const [pageMode, setPageMode] = useState("create");
+  const [selectedExercises, setSelectedExercises] = useState(exerciseBank);
+  const [selectedGroups, setSelectedGroups] = useState(null);
 
   const addExercises = () => {
-    //filters all objects with value true from selectedExercises
-    const selectedList = Object.keys(selectedExercises).filter(
-      (exercise) => selectedExercises[exercise]
-    );
-    if (!selectedList.length) {
-      //if the list is empty, just returns
-      return;
-    }
-    //reset the list of exercises in case user ticks and unticks some item
-    setSelectedExercises(selectedList);
     setPageMode("view");
   };
 
+  const toggleExercise = (groupIndex, exerciseIndex) => {
+    setSelectedExercises((prev) => {
+      return prev.map((group, gIdx) =>
+        gIdx === groupIndex
+          ? {
+              ...group,
+              exercises: group.exercises.map((exercise, eIdx) =>
+                eIdx === exerciseIndex
+                  ? { ...exercise, chosen: !exercise.chosen }
+                  : exercise
+              ),
+            }
+          : group
+      );
+    });
+  };
+
   const removeExercises = () => {
-    //sets list of exercises to empty, and swtiches page mode
-    setSelectedExercises({});
+    setSelectedExercises(exerciseBank);
     setPageMode("create");
   };
   console.log(exerciseBank);
@@ -80,41 +78,46 @@ export default function index() {
       {pageMode === "view" && (
         <div>
           <h2>This is your set</h2>
+          {selectedExercises.length &&
+            selectedExercises.map((group, index) => {
+              const exercises = group.exercises.filter((item) => item.chosen);
+              console.log(exercises);
+              if (exercises.length) {
+                return (
+                  <div key={index}>
+                    <h2>{group.group}</h2>
+                    <ul>
+                      {exercises.map((item, index) => (
+                        <li key={item.name}>{item.name}</li>
+                      ))}
+                    </ul>
+                  </div>
+                );
+              }
+            })}
         </div>
       )}
-      {/* {selectedExercises.length &&
-        selectedExercises.map((exercise, index) => (
-          <div key={index}>
-            <ul>
-              <li>{exercise["group"]}</li>
-            </ul>
-          </div>
-        ))} */}
+
       {pageMode === "create" && (
         <div>
           <h2>Create your set</h2>
+          {exerciseBank.length &&
+            exerciseBank.map((group, index) => (
+              <div key={index}>
+                <h3>{group["group"]}</h3>
+                {group["exercises"].map((exercise, index2) => (
+                  <button
+                    key={index2}
+                    onClick={() => toggleExercise(index, index2)}
+                  >
+                    {exercise.name}
+                  </button>
+                ))}
+              </div>
+            ))}
         </div>
       )}
-      {pageMode !== "view" &&
-        exerciseBank &&
-        exerciseBank.map((exercise, index) => (
-          <div key={index}>
-            <div>
-              {/* <input
-                type="checkbox"
-                id={`exercise-${index}`}
-                value={exercise["group"]}
-                checked={!!selectedExercises[exercise]}
-                onChange={() => handleCheckboxChange(exercise)}
-              /> */}
-              <h2>{exercise["group"]}</h2>
-              {exercise["exercises"].map((exercise, subindex) => (
-                <li>{exercise}</li>
-              ))}
-              {/* <label htmlFor="exercises">{exercise}</label> */}
-            </div>
-          </div>
-        ))}
+
       <div>
         <button
           onClick={pageMode === "create" ? addExercises : removeExercises}
