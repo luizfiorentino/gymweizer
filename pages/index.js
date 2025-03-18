@@ -1,3 +1,5 @@
+import { NewTodoForm } from "@/NewTodoForm";
+import { TodoList } from "@/TodoList";
 import React, { useEffect, useState } from "react";
 
 export default function index() {
@@ -166,6 +168,10 @@ export default function index() {
   const [pageMode, setPageMode] = useState("create");
   const [selectedExercises, setSelectedExercises] = useState(exerciseBank);
   const [buttonActive, setButtonActive] = useState(false);
+  const [setsAndReps, setSetsAndReps] = useState({ sets: 3, repetitions: 10 });
+  console.log(setsAndReps);
+
+  const [todos, setTodos] = useState([]);
 
   useEffect(() => {
     let activeMode;
@@ -205,12 +211,52 @@ export default function index() {
     setPageMode("create");
   };
 
+  console.log(todos);
+
+  function toggleTodo(id, completed) {
+    setTodos((currentTodos) => {
+      return currentTodos.map((todo) => {
+        if (todo.id === id) {
+          return { ...todo, completed };
+        }
+        return todo;
+      });
+    });
+  }
+
+  function deleteTodo(id) {
+    setTodos((currentTodos) => {
+      return currentTodos.filter((todo) => todo.id !== id);
+    });
+  }
+
+  function addTodo(newItem) {
+    setTodos((currentTodos) => {
+      return [
+        ...currentTodos,
+        { id: crypto.randomUUID(), title: newItem, completed: false },
+      ];
+    });
+  }
+
   return (
     <div>
       <h1>Welcome to GymWeizer</h1>
+      <NewTodoForm onSubmit={addTodo} />
+      <TodoList todos={todos} toggleTodo={toggleTodo} deleteTodo={deleteTodo} />
+      <h2>Sets & Reps </h2>
+      <label htmlFor="sets">Select number of sets</label>
+      <input
+        type="number"
+        value={setsAndReps.sets}
+        onChange={(e) =>
+          setSetsAndReps({ ...setsAndReps, sets: Number(e.target.value) })
+        }
+      />
       {pageMode === "view" && (
         <div>
           <h2>This is your set</h2>
+
           {selectedExercises.length &&
             selectedExercises.map((group, index) => {
               const exercises = group.exercises.filter((item) => item.chosen);
