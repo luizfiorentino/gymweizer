@@ -169,6 +169,12 @@ export default function index() {
   const [selectedExercises, setSelectedExercises] = useState(exerciseBank);
   const [buttonActive, setButtonActive] = useState(false);
   const [setsAndReps, setSetsAndReps] = useState({ sets: 3, repetitions: 10 });
+  const [setMode, setSetMode] = useState({
+    active: false,
+    groupIndex: null,
+    exerciseIndex: null,
+  });
+  const [numberOfSets, setNumberOfSets] = useState(null);
   console.log(setsAndReps);
 
   const [todos, setTodos] = useState([]);
@@ -204,6 +210,11 @@ export default function index() {
           : group
       );
     });
+    setSetMode({
+      active: true,
+      groupIndex: groupIndex,
+      exerciseIndex: exerciseIndex,
+    });
   };
 
   const removeExercises = () => {
@@ -238,7 +249,12 @@ export default function index() {
       ];
     });
   }
-
+  const sets = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const handleNumberOfSets = (number) => {
+    console.log("called number", number);
+    setNumberOfSets(number);
+  };
+  console.log("numberOfSets", numberOfSets);
   return (
     <div>
       <h1>Welcome to GymWeizer</h1>
@@ -285,12 +301,34 @@ export default function index() {
               <div key={index}>
                 <h3>{group["group"]}</h3>
                 {group["exercises"].map((exercise, index2) => (
-                  <button
-                    key={index2}
-                    onClick={() => toggleExercise(index, index2)}
-                  >
-                    {exercise.name}
-                  </button>
+                  <>
+                    <button
+                      key={index2}
+                      onClick={() => toggleExercise(index, index2)}
+                    >
+                      {exercise.name}
+                    </button>
+                    {setMode.active === true &&
+                      setMode.groupIndex === index &&
+                      setMode.exerciseIndex === index2 && (
+                        <div>
+                          <h3>Number of sets</h3>
+
+                          <select
+                            name="pets"
+                            id="pet-select"
+                            onChange={(e) =>
+                              setNumberOfSets(Number(e.target.value))
+                            }
+                          >
+                            <option value="">--Number of sets--</option>
+                            {sets.map((set, index) => {
+                              return <option value={set}>{set}</option>;
+                            })}
+                          </select>
+                        </div>
+                      )}
+                  </>
                 ))}
               </div>
             ))}
