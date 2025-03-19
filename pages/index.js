@@ -253,10 +253,10 @@ export default function index() {
   }
   const sets = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const handleNumberOfSets = (number) => {
-    console.log("called number", number);
+    //console.log("called number", number);
     setNumberOfSets(number);
   };
-  console.log("numberOfSets", numberOfSets);
+  //console.log("numberOfSets", numberOfSets);
 
   const handleNumberSets = (nbsets, exercise) => {
     let subArray = [];
@@ -273,13 +273,30 @@ export default function index() {
         },
       ];
     }
-    setArrayOfSets([...arrayOfSets, subArray]);
+    setArrayOfSets(...arrayOfSets, subArray);
     console.log("called", nbsets);
     //setNumberOfSets(nbsets);
   };
   console.log("arrayOfSets", arrayOfSets);
-  const handleSetChange = (value, id) => {
-    console.log("clicked", id);
+  const handleSetChange = (value, id, type) => {
+    if (type === "reps") {
+      const updatedSets = arrayOfSets.map((oneSet) =>
+        oneSet.id === id ? { ...oneSet, reps: value } : oneSet
+      );
+      setArrayOfSets(updatedSets);
+    }
+    if (type === "weight") {
+      const updatedSets = arrayOfSets.map((oneSet) =>
+        oneSet.id === id ? { ...oneSet, weight: value } : oneSet
+      );
+      setArrayOfSets(updatedSets);
+    }
+  };
+
+  const thisSetReps = (id) => {
+    const selectedSet = arrayOfSets.find((set) => set.id === id);
+    console.log(selectedSet);
+    return selectedSet.id;
   };
 
   return (
@@ -375,27 +392,40 @@ export default function index() {
                     {arrayOfSets.length > 0 &&
                     setMode.groupIndex === index &&
                     setMode.exerciseIndex === index2
-                      ? arrayOfSets[0].map((set, index) => (
+                      ? arrayOfSets.map((set, index) => (
                           <div key={index}>
                             <h3>Set n. {set.setNumber}</h3>
 
-                            <label>reps</label>
+                            <label>Reps</label>
                             <input
                               type="number"
-                              value={partialSet.reps}
+                              value={
+                                arrayOfSets.find(
+                                  (oneSet) => oneSet.id === set.id
+                                )?.reps || ""
+                              }
                               onChange={(e) =>
-                                handleSetChange(Number(e.target.value), set.id)
+                                handleSetChange(
+                                  Number(e.target.value),
+                                  set.id,
+                                  "reps"
+                                )
                               }
                             />
-                            <label>weight</label>
+                            <label>Weight</label>
                             <input
                               type="number"
-                              value={partialSet.weight}
+                              value={
+                                arrayOfSets.find(
+                                  (oneSet) => oneSet.id === set.id
+                                )?.weight || ""
+                              }
                               onChange={(e) =>
-                                setPartialSet({
-                                  ...partialSet,
-                                  weight: Number(e.target.value),
-                                })
+                                handleSetChange(
+                                  Number(e.target.value),
+                                  set.id,
+                                  "weight"
+                                )
                               }
                             />
                             <button>Add set</button>
