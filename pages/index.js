@@ -180,6 +180,7 @@ export default function index() {
   console.log(setsAndReps);
   console.log("partialSet", partialSet);
   const [todos, setTodos] = useState([]);
+  const [globalSets, setGlobalSets] = useState([]);
 
   useEffect(() => {
     let activeMode;
@@ -299,6 +300,12 @@ export default function index() {
     return selectedSet.id;
   };
 
+  const handleAddExercise = () => {
+    setGlobalSets([...globalSets, arrayOfSets]);
+    setArrayOfSets([]);
+  };
+  console.log("globalSets:", globalSets, "arrayOfSets:", arrayOfSets);
+
   return (
     <div>
       <h1>Welcome to GymWeizer</h1>
@@ -389,6 +396,7 @@ export default function index() {
                     ) : (
                       ""
                     )}
+
                     {arrayOfSets.length > 0 &&
                     setMode.groupIndex === index &&
                     setMode.exerciseIndex === index2
@@ -428,10 +436,18 @@ export default function index() {
                                 )
                               }
                             />
-                            <button>Add set</button>
                           </div>
                         ))
                       : ""}
+                    {arrayOfSets.length > 0 &&
+                    setMode.groupIndex === index &&
+                    setMode.exerciseIndex === index2 ? (
+                      <div>
+                        <button onClick={handleAddExercise}>Confirm</button>
+                      </div>
+                    ) : (
+                      ""
+                    )}
                   </>
                 ))}
               </div>
