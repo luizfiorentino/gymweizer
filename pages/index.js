@@ -169,14 +169,16 @@ export default function index() {
   const [selectedExercises, setSelectedExercises] = useState(exerciseBank);
   const [buttonActive, setButtonActive] = useState(false);
   const [setsAndReps, setSetsAndReps] = useState({ sets: 3, repetitions: 10 });
+  const [arrayOfSets, setArrayOfSets] = useState([]);
   const [setMode, setSetMode] = useState({
     active: false,
     groupIndex: null,
     exerciseIndex: null,
   });
   const [numberOfSets, setNumberOfSets] = useState(null);
+  const [partialSet, setPartialSet] = useState({ reps: 0, weight: 0 });
   console.log(setsAndReps);
-
+  console.log("partialSet", partialSet);
   const [todos, setTodos] = useState([]);
 
   useEffect(() => {
@@ -255,6 +257,31 @@ export default function index() {
     setNumberOfSets(number);
   };
   console.log("numberOfSets", numberOfSets);
+
+  const handleNumberSets = (nbsets, exercise) => {
+    let subArray = [];
+    for (let i = 0; i < nbsets; i++) {
+      //console.log("loop...", i, "arrayOfSets", arrayOfSets);
+      subArray = [
+        ...subArray,
+        {
+          id: crypto.randomUUID(),
+          exercise: exercise,
+          setNumber: i + 1,
+          reps: 0,
+          weight: 0,
+        },
+      ];
+    }
+    setArrayOfSets([...arrayOfSets, subArray]);
+    console.log("called", nbsets);
+    //setNumberOfSets(nbsets);
+  };
+  console.log("arrayOfSets", arrayOfSets);
+  const handleSetChange = (value, id) => {
+    console.log("clicked", id);
+  };
+
   return (
     <div>
       <h1>Welcome to GymWeizer</h1>
@@ -295,7 +322,7 @@ export default function index() {
 
       {pageMode === "create" && (
         <div>
-          <h2>Create your set</h2>
+          <h2>Create your train</h2>
           {exerciseBank.length &&
             exerciseBank.map((group, index) => (
               <div key={index}>
@@ -318,16 +345,63 @@ export default function index() {
                             name="pets"
                             id="pet-select"
                             onChange={(e) =>
-                              setNumberOfSets(Number(e.target.value))
+                              handleNumberSets(
+                                Number(e.target.value),
+                                exercise.name
+                              )
                             }
                           >
                             <option value="">--Number of sets--</option>
                             {sets.map((set, index) => {
-                              return <option value={set}>{set}</option>;
+                              return (
+                                <option value={set} key={index}>
+                                  {set}
+                                </option>
+                              );
                             })}
                           </select>
                         </div>
                       )}
+                    {arrayOfSets.length &&
+                    setMode.groupIndex === index &&
+                    setMode.exerciseIndex === index2 ? (
+                      <>
+                        <h2>Sets & Reps</h2>
+                        <h3>{exercise.name}</h3>
+                      </>
+                    ) : (
+                      ""
+                    )}
+                    {arrayOfSets.length > 0 &&
+                    setMode.groupIndex === index &&
+                    setMode.exerciseIndex === index2
+                      ? arrayOfSets[0].map((set, index) => (
+                          <div key={index}>
+                            <h3>Set n. {set.setNumber}</h3>
+
+                            <label>reps</label>
+                            <input
+                              type="number"
+                              value={partialSet.reps}
+                              onChange={(e) =>
+                                handleSetChange(Number(e.target.value), set.id)
+                              }
+                            />
+                            <label>weight</label>
+                            <input
+                              type="number"
+                              value={partialSet.weight}
+                              onChange={(e) =>
+                                setPartialSet({
+                                  ...partialSet,
+                                  weight: Number(e.target.value),
+                                })
+                              }
+                            />
+                            <button>Add set</button>
+                          </div>
+                        ))
+                      : ""}
                   </>
                 ))}
               </div>
