@@ -309,17 +309,9 @@ export default function index() {
   return (
     <div>
       <h1>Welcome to GymWeizer</h1>
-      <NewTodoForm onSubmit={addTodo} />
-      <TodoList todos={todos} toggleTodo={toggleTodo} deleteTodo={deleteTodo} />
+
       <h2>Sets & Reps </h2>
-      <label htmlFor="sets">Select number of sets</label>
-      <input
-        type="number"
-        value={setsAndReps.sets}
-        onChange={(e) =>
-          setSetsAndReps({ ...setsAndReps, sets: Number(e.target.value) })
-        }
-      />
+
       {pageMode === "view" && (
         <div>
           <h2>This is your set</h2>
