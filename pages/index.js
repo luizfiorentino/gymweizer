@@ -259,7 +259,7 @@ export default function index() {
   };
   //console.log("numberOfSets", numberOfSets);
 
-  const handleNumberSets = (nbsets, exercise) => {
+  const handleNumberSets = (nbsets, group, exercise) => {
     let subArray = [];
     for (let i = 0; i < nbsets; i++) {
       //console.log("loop...", i, "arrayOfSets", arrayOfSets);
@@ -267,6 +267,7 @@ export default function index() {
         ...subArray,
         {
           id: crypto.randomUUID(),
+          group: group,
           exercise: exercise,
           setNumber: i + 1,
           reps: 0,
@@ -316,22 +317,16 @@ export default function index() {
         <div>
           <h2>This is your set</h2>
 
-          {selectedExercises.length &&
-            selectedExercises.map((group, index) => {
-              const exercises = group.exercises.filter((item) => item.chosen);
-              console.log(exercises);
-              if (exercises.length) {
-                return (
-                  <div key={index}>
-                    <h2>{group.group}</h2>
-                    <ul>
-                      {exercises.map((item, index) => (
-                        <li key={item.name}>{item.name}</li>
-                      ))}
-                    </ul>
-                  </div>
-                );
-              }
+          {globalSets.length &&
+            globalSets.map((groupSets, index) => {
+              return (
+                <div key={index}>
+                  <h2>{groupSets[index]?.group}</h2>
+                  <ul>{groupSets[index]?.exercise}</ul>
+                  <ul>reps: {groupSets[index]?.reps}</ul>
+                  <ul>weight: {groupSets[index]?.weight}</ul>
+                </div>
+              );
             })}
         </div>
       )}
@@ -363,6 +358,7 @@ export default function index() {
                             onChange={(e) =>
                               handleNumberSets(
                                 Number(e.target.value),
+                                group.group,
                                 exercise.name
                               )
                             }
