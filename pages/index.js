@@ -181,6 +181,7 @@ export default function index() {
   console.log("partialSet", partialSet);
   const [todos, setTodos] = useState([]);
   const [globalSets, setGlobalSets] = useState([]);
+  const [showSelector, setShowSelector] = useState(true);
 
   useEffect(() => {
     let activeMode;
@@ -196,6 +197,11 @@ export default function index() {
 
   const addExercises = () => {
     setPageMode("view");
+    setSetMode({
+      active: false,
+      groupIndex: null,
+      exerciseIndex: null,
+    });
   };
 
   const toggleExercise = (groupIndex, exerciseIndex) => {
@@ -263,7 +269,6 @@ export default function index() {
   const handleNumberSets = (nbsets, group, exercise) => {
     let subArray = [];
     for (let i = 0; i < nbsets; i++) {
-      //console.log("loop...", i, "arrayOfSets", arrayOfSets);
       subArray = [
         ...subArray,
         {
@@ -277,10 +282,8 @@ export default function index() {
       ];
     }
     setArrayOfSets(...arrayOfSets, subArray);
-    console.log("called", nbsets);
-    //setNumberOfSets(nbsets);
   };
-  console.log("arrayOfSets", arrayOfSets);
+
   const handleSetChange = (value, id, type) => {
     if (type === "reps") {
       const updatedSets = arrayOfSets.map((oneSet) =>
@@ -305,6 +308,11 @@ export default function index() {
   const handleAddExercise = () => {
     setGlobalSets([...globalSets, arrayOfSets]);
     setArrayOfSets([]);
+    setSetMode({
+      active: false,
+      groupIndex: null,
+      exerciseIndex: null,
+    });
   };
   console.log(
     "globalSets:",
@@ -333,18 +341,20 @@ export default function index() {
                       globalSets[index - 1][0].group !==
                         globalSets[index][index2].group) && (
                       <div>
-                        <h3>{globalSets[index][index2].group}</h3>
+                        <h2>{globalSets[index][index2].group}</h2>
                       </div>
                     )}
 
                   {index2 === 0 && (
-                    <h4>{globalSets[index][index2].exercise}</h4>
+                    <h3>{globalSets[index][index2].exercise}</h3>
                   )}
-                  <li>Set {index2 + 1}</li>
-                  <li>Reps: {globalSets[index][index2].reps}</li>
-                  {globalSets[index][index2].weight > 0 && (
-                    <li>Weight: {globalSets[index][index2].weight}</li>
-                  )}
+                  <div>
+                    <h4>Set {index2 + 1}</h4>
+                    <ul>Reps: {globalSets[index][index2].reps}</ul>
+                    {globalSets[index][index2].weight > 0 && (
+                      <ul>Weight: {globalSets[index][index2].weight}</ul>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
@@ -371,8 +381,6 @@ export default function index() {
                       setMode.groupIndex === index &&
                       setMode.exerciseIndex === index2 && (
                         <div>
-                          <h3>Number of sets</h3>
-
                           <select
                             name="pets"
                             id="pet-select"
