@@ -222,6 +222,7 @@ export default function index() {
 
   const removeExercises = () => {
     setSelectedExercises(exerciseBank);
+    setGlobalSets([]);
     setPageMode("create");
   };
 
@@ -317,23 +318,33 @@ export default function index() {
     <div>
       <h1>Welcome to GymWeizer</h1>
 
-      <h2>Sets & Reps </h2>
+      {pageMode !== "view" && <h2>Sets & Reps </h2>}
 
       {pageMode === "view" && (
         <div>
-          <h2>This is your Train</h2>
+          <h2>Your Train</h2>
 
           {globalSets.map((subSets, index) => (
             <div key={index}>
               {globalSets[index]?.map((subSet, index2) => (
                 <div key={index2}>
-                  {index2 === 0 && <h3>{globalSets[index][index2].group}</h3>}
+                  {index2 === 0 &&
+                    (index === 0 ||
+                      globalSets[index - 1][0].group !==
+                        globalSets[index][index2].group) && (
+                      <div>
+                        <h3>{globalSets[index][index2].group}</h3>
+                      </div>
+                    )}
 
-                  <li>
-                    {globalSets[index][index2].exercise} - Set {index2 + 1}
-                  </li>
+                  {index2 === 0 && (
+                    <h4>{globalSets[index][index2].exercise}</h4>
+                  )}
+                  <li>Set {index2 + 1}</li>
                   <li>Reps: {globalSets[index][index2].reps}</li>
-                  <li>Weight: {globalSets[index][index2].weight}</li>
+                  {globalSets[index][index2].weight > 0 && (
+                    <li>Weight: {globalSets[index][index2].weight}</li>
+                  )}
                 </div>
               ))}
             </div>
