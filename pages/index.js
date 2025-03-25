@@ -305,7 +305,13 @@ export default function index() {
     setGlobalSets([...globalSets, arrayOfSets]);
     setArrayOfSets([]);
   };
-  console.log("globalSets:", globalSets, "arrayOfSets:", arrayOfSets);
+  console.log(
+    "globalSets:",
+    globalSets,
+    "arrayOfSets:",
+    arrayOfSets,
+    globalSets.length && globalSets[0][0]["group"]
+  );
 
   return (
     <div>
@@ -315,19 +321,20 @@ export default function index() {
 
       {pageMode === "view" && (
         <div>
-          <h2>This is your set</h2>
+          <h2>This is your Train</h2>
 
-          {globalSets.length &&
-            globalSets.map((groupSets, index) => {
-              return (
-                <div key={index}>
-                  <h2>{groupSets[index]?.group}</h2>
-                  <ul>{groupSets[index]?.exercise}</ul>
-                  <ul>reps: {groupSets[index]?.reps}</ul>
-                  <ul>weight: {groupSets[index]?.weight}</ul>
+          {globalSets.map((subSets, index) => (
+            <div key={index}>
+              {globalSets[index]?.map((subSet, index2) => (
+                <div key={index2}>
+                  <h3>{globalSets[index][index2].group}</h3>
+                  <li>{globalSets[index][index2].exercise}</li>
+                  <li>Reps: {globalSets[index][index2].reps}</li>
+                  <li>Weight: {globalSets[index][index2].weight}</li>
                 </div>
-              );
-            })}
+              ))}
+            </div>
+          ))}
         </div>
       )}
 
