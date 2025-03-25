@@ -327,8 +327,11 @@ export default function index() {
             <div key={index}>
               {globalSets[index]?.map((subSet, index2) => (
                 <div key={index2}>
-                  <h3>{globalSets[index][index2].group}</h3>
-                  <li>{globalSets[index][index2].exercise}</li>
+                  {index2 === 0 && <h3>{globalSets[index][index2].group}</h3>}
+
+                  <li>
+                    {globalSets[index][index2].exercise} - Set {index2 + 1}
+                  </li>
                   <li>Reps: {globalSets[index][index2].reps}</li>
                   <li>Weight: {globalSets[index][index2].weight}</li>
                 </div>
