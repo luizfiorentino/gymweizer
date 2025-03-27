@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest"
+    "test": "jest",
+    "cypress": "cypress open"
   },
   "dependencies": {
     "next": "15.1.7",
@@ -20,6 +21,7 @@
     "@testing-library/react": "^16.2.0",
     "@testing-library/user-event": "^14.6.1",
     "babel-jest": "^29.7.0",
+    "cypress": "^14.2.1",
     "eslint": "^9",
     "eslint-config-next": "15.1.7",
     "identity-obj-proxy": "^3.0.0",
